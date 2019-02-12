@@ -1,1 +1,0 @@
-class < ActiveRecord::Base\nend

@@ -28,7 +28,7 @@
   * `arr = []`
   * `10.times { arr << JSON.parse(RestClient.get("http://api.tvmaze.com/shows/#{rand(1..20000)}")) }`
 * `@title =` **show**`["name"]`
-* `@network =`**show**`["network"]`
+* `@network =`**show**`["network"]["name"]`
 * `@country =` **show**`["network"]["country"]["name"]`
 * `@summary =` **show**`["summary"]`
 ---
