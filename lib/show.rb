@@ -21,4 +21,10 @@ class Show < ActiveRecord::Base
   def self.most_viewers
     Show.all.max_by { |show| show.viewers.count }
   end
+
+  ## Return a unique list of countries shows are in
+  def self.countries
+    Show.select(:country).distinct.collect(&:country)
+  end
+
 end
