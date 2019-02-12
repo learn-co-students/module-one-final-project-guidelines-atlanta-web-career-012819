@@ -9,14 +9,14 @@ class CLI
       case input
       when "help"
         puts "Help".bold
-        puts "  help\t\t:show this help menu".green
+        puts "  help\t\t\t:show this help menu".green
         puts "List".bold
-        puts "  list shows\t:list all show titles".green
-        puts "  list viewers\t:list names of all viewers".green
+        puts "  list shows\t\t:list all show titles".green
+        puts "  list viewers\t\t:list names of all viewers".green
         puts "  list countries\t:list names of all countries between shows/viewers".green
         puts "Quit".bold
-        puts "  quit\t\t:quit the program".green
-        puts "  exit\t\t:alias for quit".green
+        puts "  quit\t\t\t:quit the program".green
+        puts "  exit\t\t\t:alias for quit".green
       when "list shows"
         Show.all.each_with_index { |show,i| puts (i+1).to_s.bold + ".\t#{show.title}" }
       when "list viewers"
@@ -35,7 +35,8 @@ class CLI
         puts "  name:\t\t#{viewer.name}"
         puts "  country:\t#{viewer.country}"
         puts "  top shows:"
-        viewer.top_three.each { |s| puts "\t#{s.title}" }
+        puts "\trating\tshow".upcase.magenta
+        viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
       else
         puts "invalid command"
       end

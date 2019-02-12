@@ -9,6 +9,7 @@ class Viewer < ActiveRecord::Base
 
   ## Get top three rated shows for this viewer
   def top_three
-    ratings.order(rating: :DESC).limit(3).collect(&:show)
+    # ratings.order(rating: :DESC).limit(3).collect(&:show)
+    ratings.order(rating: :DESC).limit(3)
   end
 end

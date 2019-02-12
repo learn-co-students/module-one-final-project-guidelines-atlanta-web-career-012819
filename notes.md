@@ -38,3 +38,9 @@
 3. As a user, I want to be able to find the show with the most `viewers`
 4. As a user, I want to be able to find the `show` with the best `rating`
 5. As a user, I want to find a `viewer`'s *top 3* favorite shows
+---
+# TODO
+* Data pulled in through Rest-Client is never consistent; sometimes the request fails. Why?
+* Come up with a way to create a standardized list of countries to pull country data from
+  * Maybe use `Faker` instead of pulling this data from the JSON
+* Sometimes a viewer will rate the same show multiple times. Create a way to ensure _uniqueness_
