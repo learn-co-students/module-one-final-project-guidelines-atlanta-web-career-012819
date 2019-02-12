@@ -13,4 +13,10 @@ class Show < ActiveRecord::Base
   def self.highest_average_rating
     Show.all.max_by { |show| show.average_rating }
   end
+
+  ## Return a unique list of countries shows are in
+  def self.countries
+    Show.select(:country).distinct.collect(&:country)
+  end
+
 end
