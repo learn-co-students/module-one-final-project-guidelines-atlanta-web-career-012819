@@ -37,3 +37,4 @@
 2. As a user, I want to be able to look at the average rating for a given `show`
 3. As a user, I want to be able to find the show with the most `viewers`
 4. As a user, I want to be able to find the `show` with the best `rating`
+5. As a user, I want to find a `viewer`'s *top 3* favorite shows
