@@ -33,6 +33,9 @@ class CLI
     puts "  list shows\t\t:list all show titles".green
     puts "  list viewers\t\t:list names of all viewers".green
     puts "  list countries\t:list names of all countries between shows/viewers".green
+    puts "Data".bold
+    puts "  show\t\t\t:go to menu for show data".green
+    puts "  viewer\t\t:go to menu for viewer data".green
     puts "Quit".bold
     puts "  quit\t\t\t:quit the program".green
     puts "  exit\t\t\t:alias for quit".green
@@ -81,24 +84,36 @@ class CLI
   end
 
   def self.viewer
-    print "Enter viewer ID: ".cyan
-    id = gets.chomp.to_i
+    loop do
+      puts "\nType 'list' to list all viewers, or 'exit' to return to main menu".magenta
+      print "Enter viewer ID: ".cyan
 
-    begin
-      raise CLIError if id > Viewer.count || id < 1
-      viewer = Viewer.all[id-1]
-      puts "  name:\t\t#{viewer.name}"
-      puts "  country:\t#{viewer.country}"
-      puts "  top shows:"
-      if viewer.top_three.empty?
-        puts "\tno shows rated".upcase.magenta
+      input = gets.chomp
+
+      break if input == "exit" || input == "quit"
+
+      if input == "list"
+        CLI.list_viewers
       else
-        puts "\trating\tshow".upcase.magenta
-        viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+        begin
+          id = input.to_i
+          ## FIXME: This is hacky but works
+          raise CLIError if id > Viewer.count || id < 1
+          viewer = Viewer.all[id-1]
+          puts "  name:\t\t#{viewer.name}"
+          puts "  country:\t#{viewer.country}"
+          puts "  top shows:"
+          if viewer.top_three.empty?
+            puts "\tno shows rated".upcase.magenta
+          else
+            puts "\trating\tshow".upcase.magenta
+            viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+          end
+        ## Error handling
+        rescue CLIError => error
+          puts error.message.red
+        end
       end
-    ## Error handling
-    rescue CLIError => error
-      puts error.message.red
     end
   end
 
