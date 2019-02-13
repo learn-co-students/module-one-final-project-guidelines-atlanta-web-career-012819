@@ -26,36 +26,32 @@ class CLI
       when "show"
         print "Enter show ID: ".cyan
         id = gets.chomp.to_i
-        if id > Show.count || id < 1
-          ## Do some error handling
-          begin
-            raise CLIError
-          rescue CLIError => error
-            puts error.message.red
-          end
-        else
+
+        begin
+          raise CLIError if id > Show.count || id < 1
           show = Show.all[id-1]
           puts "  title:\t#{show.title}"
           puts "  network:\t#{show.network}"
           puts "  country:\t#{show.country}"
+        ## Do some error handling
+        rescue CLIError => error
+          puts error.message.red
         end
       when "viewer"
         print "Enter viewer ID: ".cyan
         id = gets.chomp.to_i
-        if id > Viewer.count || id < 1
-          ## Error handling
-          begin
-            raise CLIError
-          rescue CLIError => error
-            puts error.message.red
-          end
-        else
+
+        begin
+          raise CLIError if id > Viewer.count || id < 1
           viewer = Viewer.all[id-1]
           puts "  name:\t\t#{viewer.name}"
           puts "  country:\t#{viewer.country}"
           puts "  top shows:"
           puts "\trating\tshow".upcase.magenta
           viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+        ## Error handling
+        rescue CLIError => error
+          puts error.message.red
         end
       else
         puts "invalid command"
