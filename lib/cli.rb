@@ -47,8 +47,12 @@ class CLI
           puts "  name:\t\t#{viewer.name}"
           puts "  country:\t#{viewer.country}"
           puts "  top shows:"
-          puts "\trating\tshow".upcase.magenta
-          viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+          if viewer.top_three.empty?
+            puts "\tno shows rated".upcase.magenta
+          else
+            puts "\trating\tshow".upcase.magenta
+            viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+          end
         ## Error handling
         rescue CLIError => error
           puts error.message.red
