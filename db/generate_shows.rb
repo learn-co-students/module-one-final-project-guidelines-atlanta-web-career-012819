@@ -2,7 +2,7 @@ require_relative '../config/environment'
 
 shows = []
 
-while shows.size < 100
+while shows.size < 10
   begin
     data = JSON.parse(RestClient.get("http://api.tvmaze.com/shows/#{rand(1..10000)}"))
     shows << {

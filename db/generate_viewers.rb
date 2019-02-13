@@ -3,7 +3,7 @@ require_relative '../config/environment'
 viewers = []
 countries = JSON.parse(File.read('db/json/countries.json'))
 
-100.times do
+50.times do
   viewers << {
       name: Faker::Name.unique.name,
       country: countries.sample
