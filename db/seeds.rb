@@ -1,10 +1,11 @@
 require_relative '../config/environment'
 
-Show.destroy_all
+# Show.destroy_all
 Rating.destroy_all
 Viewer.destroy_all
 
 10.times do
+  ## TODO: Move this to another file and refactor using a while loop
   show_data = JSON.parse(RestClient.get("http://api.tvmaze.com/shows/#{rand(1..10000)}"))
 
   # Show.create(title: show_data["name"], network: show_data["network"]["name"],
@@ -18,5 +19,8 @@ end
 end
 
 300.times do
-  Rating.create(rating: rand(1..5), show: Show.all.sample, viewer: Viewer.all.sample)
+  ## TODO: Refactor this and look for uniqueness
+  show = Show.all.sample
+  viewer = Viewer.all.sample
+  Rating.create(rating: rand(1..5), show: show, viewer: viewer)
 end
