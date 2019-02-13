@@ -46,23 +46,37 @@ class CLI
     Viewer.all.each_with_index { |viewer,i| puts (i+1).to_s.bold + ".\t#{viewer.name}" }
   end
 
-  def list_countries
+  def self.list_countries
     Show.countries.each { |country| puts country }
   end
 
   def self.show
-    print "Enter show ID: ".cyan
-    id = gets.chomp.to_i
+    loop do
+      puts "\nType 'list' to list all shows, or 'exit' to return to main menu".magenta
+      print "Enter show ID: ".cyan
 
-    begin
-      raise CLIError if id > Show.count || id < 1
-      show = Show.all[id-1]
-      puts "  title:\t#{show.title}"
-      puts "  network:\t#{show.network}"
-      puts "  country:\t#{show.country}"
-    ## Do some error handling
-    rescue CLIError => error
-      puts error.message.red
+      input = gets.chomp
+
+      break if input == "exit" || input == "quit"
+
+      if input == "list"
+        CLI.list_shows
+      else
+        begin
+          id = input.to_i
+
+          ## TODO: This will also handle cases where input is not an integer
+          ## WHY?
+          raise CLIError if id > Show.count || id < 1
+          show = Show.all[id-1]
+          puts "  title:\t#{show.title}"
+          puts "  network:\t#{show.network}"
+          puts "  country:\t#{show.country}"
+        ## Do some error handling
+        rescue CLIError => error
+          puts error.message.red
+        end
+      end
     end
   end
 
