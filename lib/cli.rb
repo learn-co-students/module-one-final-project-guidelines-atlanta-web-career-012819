@@ -1,4 +1,5 @@
 class CLI
+
   def self.run
     while true
       print "\nEnter command: ".cyan
@@ -8,15 +9,7 @@ class CLI
 
       case input
       when "help"
-        puts "Help".bold
-        puts "  help\t\t\t:show this help menu".green
-        puts "List".bold
-        puts "  list shows\t\t:list all show titles".green
-        puts "  list viewers\t\t:list names of all viewers".green
-        puts "  list countries\t:list names of all countries between shows/viewers".green
-        puts "Quit".bold
-        puts "  quit\t\t\t:quit the program".green
-        puts "  exit\t\t\t:alias for quit".green
+        CLI.help
       when "list shows"
         Show.all.each_with_index { |show,i| puts (i+1).to_s.bold + ".\t#{show.title}" }
       when "list viewers"
@@ -24,19 +17,7 @@ class CLI
       when "list countries"
         Show.countries.each { |country| puts country }
       when "show"
-        print "Enter show ID: ".cyan
-        id = gets.chomp.to_i
-
-        begin
-          raise CLIError if id > Show.count || id < 1
-          show = Show.all[id-1]
-          puts "  title:\t#{show.title}"
-          puts "  network:\t#{show.network}"
-          puts "  country:\t#{show.country}"
-        ## Do some error handling
-        rescue CLIError => error
-          puts error.message.red
-        end
+        CLI.show
       when "viewer"
         print "Enter viewer ID: ".cyan
         id = gets.chomp.to_i
@@ -60,6 +41,34 @@ class CLI
       else
         puts "invalid command"
       end
+    end
+  end
+
+  def self.help
+    puts "Help".bold
+    puts "  help\t\t\t:show this help menu".green
+    puts "List".bold
+    puts "  list shows\t\t:list all show titles".green
+    puts "  list viewers\t\t:list names of all viewers".green
+    puts "  list countries\t:list names of all countries between shows/viewers".green
+    puts "Quit".bold
+    puts "  quit\t\t\t:quit the program".green
+    puts "  exit\t\t\t:alias for quit".green
+  end
+
+  def self.show
+    print "Enter show ID: ".cyan
+    id = gets.chomp.to_i
+
+    begin
+      raise CLIError if id > Show.count || id < 1
+      show = Show.all[id-1]
+      puts "  title:\t#{show.title}"
+      puts "  network:\t#{show.network}"
+      puts "  country:\t#{show.country}"
+    ## Do some error handling
+    rescue CLIError => error
+      puts error.message.red
     end
   end
 
