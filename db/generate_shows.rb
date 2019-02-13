@@ -23,4 +23,4 @@ countries = shows.collect { |s| s[:country] }.compact.uniq
 File.open("db/json/shows.json", "w") { |f| f.write shows.to_json }
 File.open("db/json/countries.json", "w") { |f| f.write countries.to_json }
 
-binding.pry
+# binding.pry
