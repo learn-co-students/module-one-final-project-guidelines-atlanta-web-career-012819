@@ -25,21 +25,47 @@ class CLI
         Show.countries.each { |country| puts country }
       when "show"
         print "Enter show ID: ".cyan
-        show = Show.all[gets.chomp.to_i-1]
-        puts "  title:\t#{show.title}"
-        puts "  network:\t#{show.network}"
-        puts "  country:\t#{show.country}"
+        id = gets.chomp.to_i
+        if id > Show.count || id < 1
+          ## Do some error handling
+          begin
+            raise CLIError
+          rescue CLIError => error
+            puts error.message.red
+          end
+        else
+          show = Show.all[id-1]
+          puts "  title:\t#{show.title}"
+          puts "  network:\t#{show.network}"
+          puts "  country:\t#{show.country}"
+        end
       when "viewer"
         print "Enter viewer ID: ".cyan
-        viewer = Viewer.all[gets.chomp.to_i-1]
-        puts "  name:\t\t#{viewer.name}"
-        puts "  country:\t#{viewer.country}"
-        puts "  top shows:"
-        puts "\trating\tshow".upcase.magenta
-        viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+        id = gets.chomp.to_i
+        if id > Viewer.count || id < 1
+          ## Error handling
+          begin
+            raise CLIError
+          rescue CLIError => error
+            puts error.message.red
+          end
+        else
+          viewer = Viewer.all[id-1]
+          puts "  name:\t\t#{viewer.name}"
+          puts "  country:\t#{viewer.country}"
+          puts "  top shows:"
+          puts "\trating\tshow".upcase.magenta
+          viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+        end
       else
         puts "invalid command"
       end
+    end
+  end
+
+  class CLIError < StandardError
+    def message
+      "\n  ERROR: invalid operation."
     end
   end
 end
