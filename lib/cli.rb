@@ -11,33 +11,15 @@ class CLI
       when "help"
         CLI.help
       when "list shows"
-        Show.all.each_with_index { |show,i| puts (i+1).to_s.bold + ".\t#{show.title}" }
+        CLI.list_shows
       when "list viewers"
-        Viewer.all.each_with_index { |viewer,i| puts (i+1).to_s.bold + ".\t#{viewer.name}" }
+        CLI.list_viewers
       when "list countries"
-        Show.countries.each { |country| puts country }
+        CLI.list_countries
       when "show"
         CLI.show
       when "viewer"
-        print "Enter viewer ID: ".cyan
-        id = gets.chomp.to_i
-
-        begin
-          raise CLIError if id > Viewer.count || id < 1
-          viewer = Viewer.all[id-1]
-          puts "  name:\t\t#{viewer.name}"
-          puts "  country:\t#{viewer.country}"
-          puts "  top shows:"
-          if viewer.top_three.empty?
-            puts "\tno shows rated".upcase.magenta
-          else
-            puts "\trating\tshow".upcase.magenta
-            viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
-          end
-        ## Error handling
-        rescue CLIError => error
-          puts error.message.red
-        end
+        CLI.viewer
       else
         puts "invalid command"
       end
@@ -56,6 +38,18 @@ class CLI
     puts "  exit\t\t\t:alias for quit".green
   end
 
+  def self.list_shows
+    Show.all.each_with_index { |show,i| puts (i+1).to_s.bold + ".\t#{show.title}" }
+  end
+
+  def self.list_viewers
+    Viewer.all.each_with_index { |viewer,i| puts (i+1).to_s.bold + ".\t#{viewer.name}" }
+  end
+
+  def list_countries
+    Show.countries.each { |country| puts country }
+  end
+
   def self.show
     print "Enter show ID: ".cyan
     id = gets.chomp.to_i
@@ -67,6 +61,28 @@ class CLI
       puts "  network:\t#{show.network}"
       puts "  country:\t#{show.country}"
     ## Do some error handling
+    rescue CLIError => error
+      puts error.message.red
+    end
+  end
+
+  def self.viewer
+    print "Enter viewer ID: ".cyan
+    id = gets.chomp.to_i
+
+    begin
+      raise CLIError if id > Viewer.count || id < 1
+      viewer = Viewer.all[id-1]
+      puts "  name:\t\t#{viewer.name}"
+      puts "  country:\t#{viewer.country}"
+      puts "  top shows:"
+      if viewer.top_three.empty?
+        puts "\tno shows rated".upcase.magenta
+      else
+        puts "\trating\tshow".upcase.magenta
+        viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+      end
+    ## Error handling
     rescue CLIError => error
       puts error.message.red
     end
