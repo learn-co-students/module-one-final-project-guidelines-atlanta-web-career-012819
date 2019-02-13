@@ -44,3 +44,4 @@
 * Come up with a way to create a standardized list of countries to pull country data from
   * Maybe use `Faker` instead of pulling this data from the JSON
 * Sometimes a viewer will rate the same show multiple times. Create a way to ensure _uniqueness_
+* The `@summary` has a bunch of `HTML` tags thrown in which sucks. Is there a way to strip them out?
