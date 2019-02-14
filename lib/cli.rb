@@ -22,6 +22,14 @@ class CLI
         CLI.show
       when "viewer"
         CLI.viewer
+      when "self help"
+        puts "Thank you for taking the time to reflect, and recognizing the importance of self care. <3"
+        puts "\n"
+        heart_string = ""
+        10.times { heart_string += "<3" }
+        10.times do
+          puts heart_string.red
+        end
       else
         puts "invalid command, type 'help' to see a list of available commands"
       end
