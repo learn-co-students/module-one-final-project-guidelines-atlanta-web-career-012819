@@ -63,6 +63,16 @@ class CLI
     Viewer.all.each_with_index { |viewer,i| puts (i+1).to_s.bold + ".\t#{viewer.name}" }
   end
 
+  def self.submenu_help(menu)
+    puts "Help".bold
+    puts "  help\t\t\t:show this help menu".green
+    puts "List".bold
+    puts "  list\t\t\t:list all #{menu}s".green
+    puts "Navigation".bold
+    puts "  exit\t\t\t:exit to main menu".green
+    puts "  main\t\t\t:alias for exit".green
+  end
+
   def self.list_countries
     Show.countries.each { |country| puts country }
   end
@@ -169,6 +179,8 @@ class CLI
 
       if input == "list"
         CLI.list_shows
+      elsif input == "help"
+        CLI.submenu_help("show")
       else
         begin
           id = input.to_i
@@ -182,7 +194,7 @@ class CLI
           CLI.list_viewers_of_show?(show)
         ## Do some error handling
         rescue CLIError => error
-          puts error.message.red
+          puts error.message
         end
       end
     end
@@ -199,20 +211,21 @@ class CLI
 
       if input == "list"
         CLI.list_viewers
+      elsif input == "help"
+        CLI.submenu_help("viewer")
       else
         begin
           id = input.to_i
           ## FIXME: This is hacky but works
           raise CLIError if id > Viewer.count || id < 1
           viewer = Viewer.all[id-1]
-          ## TODO:
           CLI.viewer_data(viewer)
           puts "\n"
           CLI.list_watched_shows?(viewer)
           CLI.list_favorite_shows?(viewer)
         ## Error handling
         rescue CLIError => error
-          puts error.message.red
+          puts error.message
         end
       end
     end
@@ -220,7 +233,7 @@ class CLI
 
   class CLIError < StandardError
     def message
-      "\n  ERROR: invalid operation."
+      "\n  invalid range of input, type 'help' to see a list of available commands"
     end
   end
 end
