@@ -21,7 +21,7 @@ class CLI
       when "viewer"
         CLI.viewer
       else
-        puts "invalid command"
+        puts "invalid command, type 'help' to see a list of available commands"
       end
     end
   end
