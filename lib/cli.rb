@@ -166,6 +166,18 @@ class CLI
           end
           puts "\n"
           loop do
+            print "List all watched shows? (y/n): ".magenta
+            yn = gets.chomp
+
+            case yn
+            when 'y'
+              viewer.shows.each { |s| puts s.title }
+              break
+            when 'n'
+              break
+            end
+          end
+          loop do
             print "List data for favorite shows? (y/n): ".magenta
             yn = gets.chomp
 
