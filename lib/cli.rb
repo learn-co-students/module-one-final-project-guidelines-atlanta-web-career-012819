@@ -74,6 +74,39 @@ class CLI
     puts "  average rating:\t#{show.average_rating}"
   end
 
+  def self.list_viewers_of_show(show)
+    loop do
+      print "List viewers for this show? (y/n): ".magenta
+      yn = gets.chomp
+
+      case yn
+      when 'y'
+        loop do
+          print "List all viewers, in same country, or living elsewhere? (all/same/other): ".magenta
+
+          which_viewers = gets.chomp
+
+          case which_viewers
+          when "same"
+            # show.viewers.select { |v| v.country == show.country }.each { |v| puts v.name }
+            show.viewers.where("country = ?", show.country).each { |v| puts v.name }
+            break
+          when "other"
+            # show.viewers.reject { |v| v.country == show.country }.each { |v| puts v.name + ",  " + v.country.yellow }
+            show.viewers.where("country != ?", show.country).each { |v| puts v.name + ",  " + v.country.yellow }
+            break
+          when "all"
+            show.viewers.each { |v| puts v.name + ",  " + v.country.yellow }
+            break
+          end
+        end
+        puts "\n"
+      when 'n'
+        break
+      end
+    end
+  end
+
   def self.show
     loop do
       puts "\nType 'list' to list all shows, or 'exit' to return to main menu".magenta
@@ -81,7 +114,7 @@ class CLI
 
       input = gets.chomp
 
-      break if input == "exit" || input == "quit"
+      break if input == "exit" || input == "main"
 
       if input == "list"
         CLI.list_shows
@@ -89,45 +122,13 @@ class CLI
         begin
           id = input.to_i
 
-          ## TODO: This will also handle cases where input is not an integer
+          ## FIXME: This will also handle cases where input is not an integer
           ## WHY?
           raise CLIError if id > Show.count || id < 1
           show = Show.all[id-1]
           CLI.show_data(show)
           puts "\n"
-          loop do
-            print "List viewers for this show? (y/n): ".magenta
-            yn = gets.chomp
-
-            case yn
-            when 'y'
-              loop do
-                print "List all viewers, in same country, or living elsewhere? (all/same/other): ".magenta
-
-                which_viewers = gets.chomp
-
-                case which_viewers
-                when "same"
-                  # binding.pry
-                  # show.viewers.select { |v| v.country == show.country }.each { |v| puts v.name }
-                  show.viewers.where("country = ?", show.country).each { |v| puts v.name }
-                  break
-                when "other"
-                  # binding.pry
-                  # show.viewers.reject { |v| v.country == show.country }.each { |v| puts v.name + ",  " + v.country.yellow }
-                  show.viewers.where("country != ?", show.country).each { |v| puts v.name + ",  " + v.country.yellow }
-                  break
-                when "all"
-                  show.viewers.each { |v| puts v.name + ",  " + v.country.yellow }
-                  break
-                end
-              end
-              puts "\n"
-              # break
-            when 'n'
-              break
-            end
-          end
+          CLI.list_viewers_of_show(show)
         ## Do some error handling
         rescue CLIError => error
           puts error.message.red
