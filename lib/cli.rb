@@ -4,7 +4,9 @@ class CLI
     CLI.greet
 
     while true
-      print "\nEnter command: ".cyan
+      # puts "\nmain menu".upcase.magenta
+      puts "\nType 'help' to see the list of available commands. Type 'quit' to exit.".magenta
+      print "Enter command: ".cyan
       input = gets.chomp
 
       break if input == "quit" || input == "exit"
@@ -29,14 +31,13 @@ class CLI
           puts "<3".red * 10
         end
       else
-        puts "invalid command, type 'help' to see a list of available commands"
+        puts "\n  invalid command, type 'help' to see a list of available commands"
       end
     end
   end
 
   def self.greet
     puts "Welcome to the TV Show Database, powered by TVMAZE".magenta
-    puts "Type 'help' to see the list of available commands. Type 'quit' to exit.".magenta
   end
 
   def self.help
@@ -74,7 +75,7 @@ class CLI
     puts "  average rating:\t#{show.average_rating}"
   end
 
-  def self.list_viewers_of_show(show)
+  def self.list_viewers_of_show?(show)
     loop do
       print "List viewers for this show? (y/n): ".magenta
       yn = gets.chomp
@@ -107,6 +108,56 @@ class CLI
     end
   end
 
+  def self.viewer_data(viewer)
+    puts "  name:\t\t#{viewer.name}"
+    puts "  country:\t#{viewer.country}"
+    puts "  top shows:"
+    if viewer.top_three.empty?
+      puts "\tno shows rated".upcase.magenta
+    else
+      puts "\trating\tshow".upcase.magenta
+      viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+    end
+  end
+
+  def self.list_watched_shows?(viewer)
+    loop do
+      print "List all watched shows? (y/n): ".magenta
+      yn = gets.chomp
+
+      case yn
+      when 'y'
+        viewer.shows.each { |s| puts s.title }
+        break
+      when 'n'
+        break
+      end
+    end
+  end
+
+  def self.list_favorite_shows?(viewer)
+    loop do
+      print "List data for favorite shows? (y/n): ".magenta
+      yn = gets.chomp
+
+      case yn
+      when 'y'
+        loop do
+          print "Which show? (1,2,3): ".magenta
+          show_num = gets.chomp.to_i
+
+          if show_num <=3 && show_num > 0
+            CLI.show_data(viewer.top_three[show_num-1].show)
+            puts "\n"
+            break
+          end
+        end
+      when 'n'
+        break
+      end
+    end
+  end
+
   def self.show
     loop do
       puts "\nType 'list' to list all shows, or 'exit' to return to main menu".magenta
@@ -128,7 +179,7 @@ class CLI
           show = Show.all[id-1]
           CLI.show_data(show)
           puts "\n"
-          CLI.list_viewers_of_show(show)
+          CLI.list_viewers_of_show?(show)
         ## Do some error handling
         rescue CLIError => error
           puts error.message.red
@@ -144,7 +195,7 @@ class CLI
 
       input = gets.chomp
 
-      break if input == "exit" || input == "quit"
+      break if input == "exit" || input == "main"
 
       if input == "list"
         CLI.list_viewers
@@ -154,48 +205,11 @@ class CLI
           ## FIXME: This is hacky but works
           raise CLIError if id > Viewer.count || id < 1
           viewer = Viewer.all[id-1]
-          puts "  name:\t\t#{viewer.name}"
-          puts "  country:\t#{viewer.country}"
-          puts "  top shows:"
-          if viewer.top_three.empty?
-            puts "\tno shows rated".upcase.magenta
-          else
-            puts "\trating\tshow".upcase.magenta
-            viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
-          end
+          ## TODO:
+          CLI.viewer_data(viewer)
           puts "\n"
-          loop do
-            print "List all watched shows? (y/n): ".magenta
-            yn = gets.chomp
-
-            case yn
-            when 'y'
-              viewer.shows.each { |s| puts s.title }
-              break
-            when 'n'
-              break
-            end
-          end
-          loop do
-            print "List data for favorite shows? (y/n): ".magenta
-            yn = gets.chomp
-
-            case yn
-            when 'y'
-              loop do
-                print "Which show? (1,2,3): ".magenta
-                show_num = gets.chomp.to_i
-
-                if show_num <=3 && show_num > 0
-                  CLI.show_data(viewer.top_three[show_num-1].show)
-                  puts "\n"
-                  break
-                end
-              end
-            when 'n'
-              break
-            end
-          end
+          CLI.list_watched_shows?(viewer)
+          CLI.list_favorite_shows?(viewer)
         ## Error handling
         rescue CLIError => error
           puts error.message.red
