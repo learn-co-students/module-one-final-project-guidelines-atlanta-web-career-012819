@@ -11,6 +11,7 @@ while shows.size < 10
       country: data["network"]["country"]["name"],
       summary: data["summary"].gsub(%r{</?[^>]+?>}, '')
     }
+    shows.uniq!
     puts "SUCCESS"
   rescue RestClient::ExceptionWithResponse => e
     err = JSON.parse(e.response)
