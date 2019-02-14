@@ -85,6 +85,21 @@ class CLI
     puts "  average rating:\t#{show.average_rating}"
   end
 
+  def self.list_summary?(show)
+    loop do
+      print "List summary for this show? (y/n): ".magenta
+      yn = gets.chomp
+
+      case yn
+      when 'y'
+        puts show.summary
+        break
+      when 'n'
+        break
+      end
+    end
+  end
+
   def self.list_viewers_of_show?(show)
     loop do
       print "List viewers for this show? (y/n): ".magenta
@@ -157,7 +172,9 @@ class CLI
           show_num = gets.chomp.to_i
 
           if show_num <=3 && show_num > 0
-            CLI.show_data(viewer.top_three[show_num-1].show)
+            show = viewer.top_three[show_num-1].show
+            CLI.show_data(show)
+            CLI.list_summary?(show)
             puts "\n"
             break
           end
@@ -191,6 +208,7 @@ class CLI
           show = Show.all[id-1]
           CLI.show_data(show)
           puts "\n"
+          CLI.list_summary?(show)
           CLI.list_viewers_of_show?(show)
         ## Do some error handling
         rescue CLIError => error
