@@ -25,10 +25,8 @@ class CLI
       when "self help"
         puts "Thank you for taking the time to reflect, and recognizing the importance of self care. <3"
         puts "\n"
-        heart_string = ""
-        10.times { heart_string += "<3" }
         10.times do
-          puts heart_string.red
+          puts "<3".red * 10
         end
       else
         puts "invalid command, type 'help' to see a list of available commands"
