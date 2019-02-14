@@ -1,10 +1,19 @@
-# Module One Final Project Guidelines
+# Cause Connect
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
+Cause Connect is my first FlatIron project in which I generated fake data for potential donors, non-profit organizations(causes) and donations. The "app" idea was to help those looking to contribute to a cause(donors) find causes of interest.
 
-For your final project, we'll be building a Command Line database application.
+##User Story
+  1. Allow users to create a cause [CREATE]
+  2. Donors can search for causes (specific or genre) [READ]
+  3. Causes' status can be updated, ranking 1-10 where 10 == completion status[UPDATE]
+  4. Donors can make a donation (donations must be $100-$999)[CREATE]
+  5. Donors can cancel a donation [DELETE]
+  6. Users can delete a cause [DELETE]
 
-## Project Requirements
+##Installation
+
+#Usage
+
 
 ### Option One - Data Analytics Project
 
