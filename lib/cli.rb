@@ -110,11 +110,14 @@ class CLI
 
                 case which_viewers
                 when "same"
-                  show.viewers.select { |v| v.country == show.country }.each { |v| puts v.name }
+                  # binding.pry
+                  # show.viewers.select { |v| v.country == show.country }.each { |v| puts v.name }
+                  show.viewers.where("country = ?", show.country).each { |v| puts v.name }
                   break
                 when "other"
                   # binding.pry
-                  show.viewers.reject { |v| v.country == show.country }.each { |v| puts v.name + ",  " + v.country.yellow }
+                  # show.viewers.reject { |v| v.country == show.country }.each { |v| puts v.name + ",  " + v.country.yellow }
+                  show.viewers.where("country != ?", show.country).each { |v| puts v.name + ",  " + v.country.yellow }
                   break
                 when "all"
                   show.viewers.each { |v| puts v.name + ",  " + v.country.yellow }
