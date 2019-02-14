@@ -68,6 +68,14 @@ class CLI
     Show.countries.each { |country| puts country }
   end
 
+  def self.show_data(show)
+    puts "  title:\t\t#{show.title}"
+    puts "  network:\t\t#{show.network}"
+    puts "  country:\t\t#{show.country}"
+    puts "  total viewers:\t#{show.num_ratings}"
+    puts "  average rating:\t#{show.average_rating}"
+  end
+
   def self.show
     loop do
       puts "\nType 'list' to list all shows, or 'exit' to return to main menu".magenta
@@ -87,11 +95,7 @@ class CLI
           ## WHY?
           raise CLIError if id > Show.count || id < 1
           show = Show.all[id-1]
-          puts "  title:\t\t#{show.title}"
-          puts "  network:\t\t#{show.network}"
-          puts "  country:\t\t#{show.country}"
-          puts "  total viewers:\t#{show.num_ratings}"
-          puts "  average rating:\t#{show.average_rating}"
+          CLI.show_data(show)
           puts "\n"
           loop do
             print "List all viewers for this show? (y/n): ".magenta
@@ -103,8 +107,6 @@ class CLI
               break
             when 'n'
               break
-            # else
-            #   print "y/n: "
             end
           end
         ## Do some error handling
@@ -140,6 +142,27 @@ class CLI
           else
             puts "\trating\tshow".upcase.magenta
             viewer.top_three.each { |r| puts "\t#{r.rating}\t#{r.show.title}" }
+          end
+          puts "\n"
+          loop do
+            print "List data for favorite shows? (y/n): ".magenta
+            yn = gets.chomp
+
+            case yn
+            when 'y'
+              loop do
+                print "Which show? (1,2,3): ".magenta
+                show_num = gets.chomp.to_i
+
+                if show_num <=3 && show_num > 0
+                  CLI.show_data(viewer.top_three[show_num-1].show)
+                  puts "\n"
+                  break
+                end
+              end
+            when 'n'
+              break
+            end
           end
         ## Error handling
         rescue CLIError => error
