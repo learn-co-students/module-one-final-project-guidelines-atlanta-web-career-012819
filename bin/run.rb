@@ -1,5 +1,7 @@
 require_relative '../config/environment'
+require 'colorize'
+require 'pry'
 
-
-
-puts "HELLO WORLD"
+cli = CommandLineInterface.new
+cli.greeting
+cli.user_inputs
