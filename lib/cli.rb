@@ -72,9 +72,26 @@ class CLI
           ## WHY?
           raise CLIError if id > Show.count || id < 1
           show = Show.all[id-1]
-          puts "  title:\t#{show.title}"
-          puts "  network:\t#{show.network}"
-          puts "  country:\t#{show.country}"
+          puts "  title:\t\t#{show.title}"
+          puts "  network:\t\t#{show.network}"
+          puts "  country:\t\t#{show.country}"
+          puts "  total viewers:\t#{show.num_ratings}"
+          puts "  average rating:\t#{show.average_rating}"
+          puts "\n"
+          loop do
+            print "List all viewers for this show? (y/n): ".magenta
+            yn = gets.chomp
+
+            case yn
+            when 'y'
+              show.viewers.each { |v| puts v.name + ",  " + v.country.yellow }
+              break
+            when 'n'
+              break
+            # else
+            #   print "y/n: "
+            end
+          end
         ## Do some error handling
         rescue CLIError => error
           puts error.message.red
