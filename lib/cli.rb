@@ -98,13 +98,31 @@ class CLI
           CLI.show_data(show)
           puts "\n"
           loop do
-            print "List all viewers for this show? (y/n): ".magenta
+            print "List viewers for this show? (y/n): ".magenta
             yn = gets.chomp
 
             case yn
             when 'y'
-              show.viewers.each { |v| puts v.name + ",  " + v.country.yellow }
-              break
+              loop do
+                print "List all viewers, in same country, or living elsewhere? (all/same/other): ".magenta
+
+                which_viewers = gets.chomp
+
+                case which_viewers
+                when "same"
+                  show.viewers.select { |v| v.country == show.country }.each { |v| puts v.name }
+                  break
+                when "other"
+                  # binding.pry
+                  show.viewers.reject { |v| v.country == show.country }.each { |v| puts v.name + ",  " + v.country.yellow }
+                  break
+                when "all"
+                  show.viewers.each { |v| puts v.name + ",  " + v.country.yellow }
+                  break
+                end
+              end
+              puts "\n"
+              # break
             when 'n'
               break
             end
