@@ -1,6 +1,8 @@
 class CLI
 
   def self.run
+    CLI.greet
+
     while true
       print "\nEnter command: ".cyan
       input = gets.chomp
@@ -24,6 +26,11 @@ class CLI
         puts "invalid command, type 'help' to see a list of available commands"
       end
     end
+  end
+
+  def self.greet
+    puts "Welcome to the TV Show Database, powered by TVMAZE".magenta
+    puts "Type 'help' to see the list of available commands. Type 'quit' to exit.".magenta
   end
 
   def self.help
