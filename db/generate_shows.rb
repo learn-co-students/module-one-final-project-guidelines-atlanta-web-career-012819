@@ -8,11 +8,13 @@ while shows.size < 10
     shows << {
       title: data["name"],
       network: data["network"]["name"],
-      country: data["network"]["country"]["name"]
+      country: data["network"]["country"]["name"],
+      summary: data["summary"].gsub(%r{</?[^>]+?>}, '')
     }
     puts "SUCCESS"
   rescue RestClient::ExceptionWithResponse => e
-    puts "ERROR: #{e.response}"
+    err = JSON.parse(e.response)
+    puts "ERROR: #{err["status"]} #{err["name"]}"
   rescue StandardError => e
     puts "ERROR: NO DATA"
   end
