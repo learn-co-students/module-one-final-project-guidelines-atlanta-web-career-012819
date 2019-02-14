@@ -1,9 +1,16 @@
 # TV Show Ratings - Data Analytics
+## Setup
+First, run `bundle install` from the root directory to install dependencies. Next run `rake db:migrate` to setup the database tables.
 
+Random data has been generated already and stored for you as JSON in the `db/json` directory. If you would just like to get up and running quickly, simply run `rake db:seed` to seed the database with the supplied data.
+
+Alternatively, you can run `rake generate:all` to generate a new set of random data, and then `rake db:seed` to seed the database.
+## Run
+Run `ruby bin/run.rb` to start the program.
 ## Models: Viewer < Rating > Show
 ### Viewer
 * has_many :shows
-### Review JOINS Viewer | Show
+### Review
 * belongs_to :user
 * belongs_to :show
 * @rating = rand(1..5)
