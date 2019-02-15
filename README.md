@@ -40,5 +40,7 @@ Alternatively, you can run `rake generate:all` to generate a new set of random d
 ---
 # TODO
 * Clean up the way in which data is pulled using Rest-Client, using the proper checking and error handling
-* FIXME: The `@summary` has a bunch of `HTML` tags thrown in which sucks. Is there a way to strip them out?
-  *  Either get rid of the `@summary` attribute entirely or figure this out!!!
+  * Find a better way to ensure data exists without having to catch a `NoMethodError` - this is **bad** and hacky
+* Find a way to paginate the data output in the console
+* Improve the way input is validated
+* Add functionality for the user to create new viewer data and add ratings to the database
