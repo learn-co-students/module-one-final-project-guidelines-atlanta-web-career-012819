@@ -5,3 +5,7 @@ gem "sinatra-activerecord"
 gem "sqlite3"
 gem "pry"
 gem "require_all"
+gem "rest-client"
+gem "json"
+gem "colorize"
+gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
